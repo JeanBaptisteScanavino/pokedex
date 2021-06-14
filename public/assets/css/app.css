@@ -1,0 +1,41 @@
+body{
+   background:#C14040;
+   color :#EFE3E3;
+   font-family: 'Bangers', cursive;
+}
+#nav{
+   background-color:#EFE3E3; 
+}
+#nav > a{
+   color:#C14040;
+}
+#card,#poke_info{
+   background:#982C2C;
+   color :#EFE3E3;
+   transition: 0.1s;
+}
+#card:hover,#btnType:hover{
+   transform: scale(1.1);
+   transition: 0.5s;
+}
+#btnType{
+   box-shadow: rgba(0, 0, 0, 0.3) 3px 3px;
+   color :#EFE3E3;
+   text-shadow: black 1px 2px;
+}
+#poke_info > * {
+   margin-top:1em;
+}
+h2{
+   font-size: 3em;
+}
+.progress-bar{
+   animation: progress-bar-start 0.5s ;
+}
+
+   @keyframes progress-bar-start {
+     0% { width:0; }
+     25%{ width:100%; }
+     50% { width:25%; }
+     100% { width:50%; }
+   }

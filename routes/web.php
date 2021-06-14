@@ -24,3 +24,7 @@ Route::get(
     '/pokemon/{name}',
     [MainController::class, 'show']
 )->name('pokemon_detail');
+Route::get(
+    '/types/{type?}',
+    [MainController::class, 'types']
+)->name('types');

@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\pokemon_type;
 use Illuminate\Database\Eloquent\Model;
 
 class type extends Model
 {
-    use HasFactory;
+    protected $table = 'type';
+
+    public function pokemon_type()
+    {
+        return $this->hasMany(pokemon_type::class);
+    }
 }

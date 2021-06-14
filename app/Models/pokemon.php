@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\pokemon_type;
 use Illuminate\Database\Eloquent\Model;
 
 class pokemon extends Model
 {
-    use HasFactory;
+
+    public function types()
+    {
+        return $this->hasMany(pokemon_type::class,'pokemon_numero','numero');
+    }
 }

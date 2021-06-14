@@ -1,12 +1,15 @@
 @extends('layouts.app')
 @section('content')
-    <div class="d-flex  flex-wrap">
+
+    <h2 class="text-center">{{ $title }}</h2>
+    <div class="d-flex  flex-wrap m-auto col-12 justify-content-around ">
     @foreach ($pokemons as $pokemon)
-    <a  class="btn btn-outline-warning d-flex justify-content-center flex-column align-items-center col-3" 
+    <a id='card' class="btn  d-flex justify-content-between flex-column align-items-center col-10 col-sm-5 col-lg-3 col-xxl-2 m-3" 
     href="{{ route('pokemon_detail',['name' => $pokemon->nom]) }}">
-        <img class="img-thumbnail col-8" src="{{ asset("img/$pokemon->numero.png")}}">
-        <h2>{{ $pokemon->nom }}</h2>    
+        <img class="img-thumbnail mt-4 col-8" src="{{ asset("img/$pokemon->numero.png")}}" alt="{{ $pokemon->nom }}">
+        <h3 id="name" class="fs-6 p-3">#{{ $pokemon->numero }} {{ $pokemon->nom }}</h3>    
     </a>     
     @endforeach
     </div>
+
 @endsection
