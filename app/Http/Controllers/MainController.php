@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\type;
-use App\Models\pokemon;
-use Illuminate\Http\Request;
+
+use App\Models\Type;
+use App\Models\Pokemon;
 
 class MainController extends Controller
 {
     public function home()
     {
         
-        $pokemons = pokemon::all();
+        $pokemons = Pokemon::all();
         return view('home', [
             'pokemons' => $pokemons,
             'title'=>"Attrapez-les tous"
@@ -19,11 +19,11 @@ class MainController extends Controller
     }
     public function show($name)
     {
-        $pokemon = pokemon::where('nom',$name)->firstOrFail();
+        $pokemon = Pokemon::where('name',$name)->firstOrFail();
         $types = [];
         foreach ($pokemon->types as $type)
         {
-             $types[] = type::find($type->type_id);
+             $types[] = Type::find($type->type_id);
         }
         
         return view('pokemon', [
@@ -34,23 +34,24 @@ class MainController extends Controller
     public function types($type=null)
     {
         if($type){
-            $typeToFind=type::where('name',$type)->firstOrFail();
+            $typeToFind=Type::where('name',$type)->firstOrFail();
             $pokemons = [];
             foreach ( $typeToFind->pokemon_type as $type_relation)
             {
-                $pokemons[] = pokemon::where('numero',$type_relation->pokemon_numero)->first();
+                $pokemons[] = Pokemon::where('number',$type_relation->pokemon_number)->first();
             }
             if (count($pokemons)===0){
                 $title = "Il n'y a pas de Pokemon de type : $type";
             }  else {
                 $title = "Pokemon de type : $type";
             }
+            
             return view('home', [
                 'pokemons' => $pokemons,
                 'title'=> $title,
             ]);
         }
-        $types = type::all();
+        $types = Type::all();
         return view('types', [
             'types' => $types,
         ]);
