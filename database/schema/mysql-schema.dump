@@ -1,48 +1,74 @@
--- phpMyAdmin SQL Dump
--- version 4.6.6deb5
--- https://www.phpmyadmin.net/
---
--- Client :  localhost:3306
--- Généré le :  Lun 24 Décembre 2018 à 17:05
--- Version du serveur :  5.7.24-0ubuntu0.18.04.1
--- Version de PHP :  7.1.25-1+ubuntu18.04.1+deb.sury.org+1
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de données :  `pokedex`
---
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pokemon`
---
-
-CREATE TABLE `pokemon` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `nom` varchar(255) NOT NULL,
-  `pv` int(11) NOT NULL,
-  `attaque` int(11) NOT NULL,
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `pokemon_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pokemon_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pokemon_number` int(10) unsigned NOT NULL,
+  `type_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pokemon_types_pokemon_number_foreign` (`pokemon_number`),
+  KEY `pokemon_types_type_id_foreign` (`type_id`),
+  CONSTRAINT `pokemon_types_pokemon_number_foreign` FOREIGN KEY (`pokemon_number`) REFERENCES `pokemons` (`number`),
+  CONSTRAINT `pokemon_types_type_id_foreign` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `pokemons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pokemons` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `life` int(11) NOT NULL,
+  `attack` int(11) NOT NULL,
   `defense` int(11) NOT NULL,
-  `attaque_spe` int(11) NOT NULL,
-  `defense_spe` int(11) NOT NULL,
-  `vitesse` int(11) NOT NULL,
-  `numero` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `attack_pow` int(11) NOT NULL,
+  `defense_pow` int(11) NOT NULL,
+  `speed` int(11) NOT NULL,
+  `number` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `pokemons_number_unique` (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `color` varchar(6) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Contenu de la table `pokemon`
---
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-INSERT INTO `pokemon` (`id`, `nom`, `pv`, `attaque`, `defense`, `attaque_spe`, `defense_spe`, `vitesse`, `numero`) VALUES
+INSERT INTO `migrations` VALUES (1,'2021_06_16_055632_types',1);
+INSERT INTO `migrations` VALUES (2,'2021_06_16_055636_pokemons',1);
+INSERT INTO `migrations` VALUES (3,'2021_06_16_055642_pokemon_types',1);
+
+
+
+INSERT INTO `pokemons` (`id`, `name`, `life`, `attack`, `defense`, `attack_pow`, `defense_pow`, `speed`, `number`) VALUES
 (1209, 'Bulbizarre', 45, 49, 49, 65, 65, 45, 1),
 (1210, 'Herbizarre', 60, 62, 63, 80, 80, 60, 2),
 (1211, 'Florizarre', 80, 82, 83, 100, 100, 80, 3),
@@ -195,23 +221,26 @@ INSERT INTO `pokemon` (`id`, `nom`, `pv`, `attaque`, `defense`, `attaque_spe`, `
 (1358, 'Mewtwo', 106, 110, 90, 154, 90, 130, 150),
 (1359, 'Mew', 100, 100, 100, 100, 100, 100, 151);
 
--- --------------------------------------------------------
+INSERT INTO `types` (`id`, `name`, `color`) VALUES
+(1, 'Acier', 'aaaabb'),
+(2, 'Combat', 'bb5544'),
+(3, 'Dragon', '7766ee'),
+(4, 'Eau', '3399ff'),
+(5, 'Électrik', 'ffbb33'),
+(6, 'Feu', 'ff4422'),
+(7, 'Glace', '77ddff'),
+(8, 'Insecte', 'aabb22'),
+(9, 'Normal', 'bbaabb'),
+(10, 'Plante', '77cc55'),
+(11, 'Poison', 'aa5599'),
+(12, 'Psy', 'ff5599'),
+(13, 'Roche', 'bbaa66'),
+(14, 'Sol', 'ddbb55'),
+(15, 'Spectre', '6666bb'),
+(16, 'Ténèbres', '665544'),
+(17, 'Vol', '6699ff');
 
---
--- Structure de la table `pokemon_type`
---
-
-CREATE TABLE `pokemon_type` (
-  `id` int(11) NOT NULL,
-  `pokemon_numero` int(10) UNSIGNED NOT NULL,
-  `type_id` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `pokemon_type`
---
-
-INSERT INTO `pokemon_type` (`id`, `pokemon_numero`, `type_id`) VALUES
+INSERT INTO `pokemon_types` (`id`, `pokemon_number`, `type_id`) VALUES
 (431, 1, 10),
 (432, 1, 11),
 (433, 2, 10),
@@ -428,97 +457,4 @@ INSERT INTO `pokemon_type` (`id`, `pokemon_numero`, `type_id`) VALUES
 (644, 150, 12),
 (645, 151, 12);
 
--- --------------------------------------------------------
 
---
--- Structure de la table `type`
---
-
-CREATE TABLE `type` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `color` varchar(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `type`
---
-
-INSERT INTO `type` (`id`, `name`, `color`) VALUES
-(1, 'Acier', 'aaaabb'),
-(2, 'Combat', 'bb5544'),
-(3, 'Dragon', '7766ee'),
-(4, 'Eau', '3399ff'),
-(5, 'Électrik', 'ffbb33'),
-(6, 'Feu', 'ff4422'),
-(7, 'Glace', '77ddff'),
-(8, 'Insecte', 'aabb22'),
-(9, 'Normal', 'bbaabb'),
-(10, 'Plante', '77cc55'),
-(11, 'Poison', 'aa5599'),
-(12, 'Psy', 'ff5599'),
-(13, 'Roche', 'bbaa66'),
-(14, 'Sol', 'ddbb55'),
-(15, 'Spectre', '6666bb'),
-(16, 'Ténèbres', '665544'),
-(17, 'Vol', '6699ff');
-
---
--- Index pour les tables exportées
---
-
---
--- Index pour la table `pokemon`
---
-ALTER TABLE `pokemon`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `numero_2` (`numero`),
-  ADD KEY `numero` (`numero`);
-
---
--- Index pour la table `pokemon_type`
---
-ALTER TABLE `pokemon_type`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `type_id` (`type_id`),
-  ADD KEY `pokemon_numero` (`pokemon_numero`);
-
---
--- Index pour la table `type`
---
-ALTER TABLE `type`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT pour les tables exportées
---
-
---
--- AUTO_INCREMENT pour la table `pokemon`
---
-ALTER TABLE `pokemon`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1360;
---
--- AUTO_INCREMENT pour la table `pokemon_type`
---
-ALTER TABLE `pokemon_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=646;
---
--- AUTO_INCREMENT pour la table `type`
---
-ALTER TABLE `type`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
---
--- Contraintes pour les tables exportées
---
-
---
--- Contraintes pour la table `pokemon_type`
---
-ALTER TABLE `pokemon_type`
-  ADD CONSTRAINT `pokemon_type_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
-  ADD CONSTRAINT `pokemon_type_ibfk_2` FOREIGN KEY (`pokemon_numero`) REFERENCES `pokemon` (`numero`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
